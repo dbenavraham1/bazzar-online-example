@@ -37,7 +37,7 @@ public class ApplicationConfig {
   @Bean public EntityManagerFactory entityManagerFactory() {
     HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
     vendorAdapter.setDatabase(Database.MYSQL);
-    vendorAdapter.setGenerateDdl(false);
+    vendorAdapter.setGenerateDdl(true);
 
     LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
     factory.setJpaVendorAdapter(vendorAdapter);

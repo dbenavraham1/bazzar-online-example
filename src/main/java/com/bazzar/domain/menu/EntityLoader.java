@@ -21,12 +21,36 @@ public class EntityLoader {
   @Inject
   private CategoryRepository categories;
 
+  @Inject
+  private CategoryTestRepository categoryTests;
+
   @PostConstruct
   private void load() {
 
 	Category category = categories.save(getCategory());
     LOG.info("  **** Saved Categories: " + category);
+    
+	for (CategoryTest categoryTest: categoryTests.findRoots()) {
+		categoryTests.delete(categoryTest);
+	}
+    LOG.info("  **** Deleted Existing CategoryTests: ");
+	
+    CategoryTest categoryTest = getCategoryTests("Root");
+    for (int i = 0; i < 3; i++) {
+    	categoryTest.getChildren().add(getCategoryTests("child " + (i + 1)));
+    }
+    categoryTests.save(categoryTest);
+    LOG.info("  **** Saved CategoryTests: " + categoryTest);
   }
+
+	private CategoryTest getCategoryTests(String name) {
+		CategoryTest categoryTest = new CategoryTest();
+		categoryTest.setAttribute(name);
+		categoryTest.setActive(true);
+		categoryTest.setCPD( new Date () );
+		categoryTest.setUPD( new Date () );
+		return categoryTest;
+	}
 
 	private Category getCategory (){
 		Set <Product> products = new HashSet <Product> ();
