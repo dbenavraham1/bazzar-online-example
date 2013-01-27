@@ -12,11 +12,11 @@ import org.springframework.data.rest.repository.annotation.RestResource;
 @RestResource(path = "categorytest")
 public interface CategoryTestRepository extends CrudRepository<CategoryTest, Long> {
 
-  @RestResource(path = "attribute", rel = "attributes")
-  public List<CategoryTest> findByAttribute(@Param("attribute") String attribute);
+  @RestResource(path = "name", rel = "names")
+  public List<CategoryTest> findByName(@Param("name") String name);
 
   @RestResource(path = "getRoots")
-  @Query("select ct from CategoryTest ct left join fetch ct.children")
+  @Query("select distinct ct from CategoryTest ct left join fetch ct.children where ct.parent is null")
   public List<CategoryTest> findRoots();
 
 }
